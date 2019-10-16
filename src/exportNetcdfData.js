@@ -1,5 +1,5 @@
 // @flow
-import type {iteratorController, netcdfExporter, variablesUses} from "../types/exporterInterface";
+import type {iteratorController, netcdfExporter, variablesUses} from "./types/exporterInterface";
 
 const netcdf4 = require("netcdf4");
 const _ = require('lodash');
@@ -69,4 +69,4 @@ module.exports = async function exportNetcdfData(
   }
 
   exporter.endCallback();
-}
+};

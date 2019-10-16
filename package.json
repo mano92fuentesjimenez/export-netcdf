@@ -1,7 +1,7 @@
 {
   "name": "export-netcdf",
   "version": "0.1.1",
-  "main": "index.js",
+  "main": "lib/exportNetcdfData.js",
   "license": "MIT",
   "description": "Generic netcdf exporter",
   "repository": "https://github.com/mano92fuentesjimenez/export-netcdf.git",
@@ -20,5 +20,6 @@
     "flow-remove-types": "^2.109.0",
     "mocha": "^6.2.1",
     "sinon": "^7.5.0"
-  }
+  },
+  "files": ["lib"]
 }
