@@ -1,0 +1,23 @@
+{
+  "name": "export-netcdf",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "lodash": "^4.17.15",
+    "mocha": "^6.2.1",
+    "netcdf4": "^0.4.1",
+    "pg": "^7.12.1",
+    "sinon": "^7.5.0"
+  },
+  "scripts": {
+    "build": "flow-remove-types src/ -d lib/",
+    "prepublish": "yarn run build",
+    "test": "mocha --recursive --timeout 5000 ./tests"
+  },
+  "devDependencies": {
+    "flow-bin": "^0.109.0",
+    "flow-remove-types": "^2.109.0"
+  }
+}
