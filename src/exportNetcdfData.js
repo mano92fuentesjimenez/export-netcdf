@@ -45,10 +45,11 @@ module.exports = async function exportNetcdfData(
     return dimensions.map(d => ({ total: d.length, name: d.name, }));
   })), (d => d.name));
 
-  const totalRows = dimensionIteratorsControllers.reduce( (v, c) => ({ current: 0, name: '', total: v.total + c.total })).total;
+  const totalRows = dimensionIteratorsControllers.reduce( (v, c) => ({ current: 0, name: '', total: v.total * c.total })).total;
   const variablesToInitExporter = variables.map(variable => {
     const netcdfVariable = file.root.variables[variable];
-    return { [variable]: netcdfVariable.type };
+    const variableName = variablesUses[variable]? variablesUses[variable] : variable;
+    return { [variableName]: netcdfVariable.type };
   }).reduce((v,c) =>({...c, ...v}));
 
   await exporter.init(variablesToInitExporter, totalRows );
