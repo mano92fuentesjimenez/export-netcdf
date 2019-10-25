@@ -83,4 +83,23 @@ describe('exporting netcdf files',() => {
       expect(keys[8]).to.equal('V10');
     })
   });
+
+  it('should export some variables with XLAT as LATITUDE and XLONG as LONGITUDE', async () => {
+    await exportNetcdf({ dirToFile: file,exporter, variables: ['XLAT', 'Times', 'XLONG', 'Q2', 'T2', 'TH2', 'PSFC', 'U10', 'V10'], variablesUses: {XLAT: 'LATITUDE', XLONG: 'LONGITUDE'} });
+    expect(exporter.write.callCount).to.equal(139*77);
+
+    exporter.write.args.forEach(([row]) => {
+      const keys = Object.keys(row);
+      expect(keys.length).to.equal(9);
+      expect(keys[0]).to.equal('LATITUDE');
+      expect(keys[1]).to.equal('Times');
+      expect(keys[2]).to.equal('LONGITUDE');
+      expect(keys[3]).to.equal('Q2');
+      expect(keys[4]).to.equal('T2');
+      expect(keys[5]).to.equal('TH2');
+      expect(keys[6]).to.equal('PSFC');
+      expect(keys[7]).to.equal('U10');
+      expect(keys[8]).to.equal('V10');
+    })
+  });
 });
