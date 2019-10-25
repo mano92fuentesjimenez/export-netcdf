@@ -1,12 +1,12 @@
 // @flow
-type emptyFn = () => void;
+type promiseFn = () => Promise<void>;
 
 export type netcdfExporter = {
-  write:  Object => Promise<boolean>,
-  finishWriting: emptyFn,
-  endCallback: emptyFn,
+  init: (variables : {[colName: string]: string}, rowCount: number) => Promise<void>,
+  write: (row : {[rowName: string]: any}) => Promise<void>,
+  finishWriting: promiseFn
 }
 
 export type variablesUses = 'LATITUDE' | 'LONGITUDE' | 'TIME';
 
-export type iteratorController = { total: number, current: number, name: string };
+export type dimensionIteratorController = { total: number, current: number, name: string };
