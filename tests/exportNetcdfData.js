@@ -9,8 +9,8 @@ describe('exporting netcdf files',() => {
   beforeEach(()=> {
     exporter = {
       init: sinon.stub().resolves(),
-      endCallback: sinon.stub().resolves(),
       write: sinon.stub().resolves(),
+      finishWriting: sinon.stub().resolves(),
     }
   });
   it('should export a char variable of 1 dimension', async () => {
