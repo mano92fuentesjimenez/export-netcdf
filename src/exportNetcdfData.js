@@ -1,6 +1,7 @@
 // @flow
 import type {dimensionIteratorController, netcdfExporter, variablesUses} from "./types/exporterInterface";
 
+// $FlowFixMe
 const netcdf4 = require("netcdf4");
 const _ = require('lodash');
 
