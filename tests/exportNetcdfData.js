@@ -1,4 +1,4 @@
-const exportNetcdf = require('../lib/bin/exportNetcdfData');
+const exportNetcdf = require('../lib/exportNetcdfData');
 const sinon = require('sinon');
 const expect = require('chai').expect;
 
@@ -8,9 +8,9 @@ describe('exporting netcdf files',() => {
 
   beforeEach(()=> {
     exporter = {
-      init: sinon.spy().resolves(),
-      endCallback: sinon.spy().resolves(),
-      write: sinon.spy().resolves(),
+      init: sinon.stub().resolves(),
+      endCallback: sinon.stub().resolves(),
+      write: sinon.stub().resolves(),
     }
   });
   it('should export a char variable of 1 dimension', async () => {
