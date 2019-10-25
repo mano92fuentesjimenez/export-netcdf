@@ -48,7 +48,7 @@ module.exports = async function exportNetcdfData(
   const variablesToInitExporter = variables.map(variable => {
     const netcdfVariable = file.root.variables[variable];
     return { [variable]: netcdfVariable.type };
-  });
+  }).reduce((v,c) =>({...c, ...v}));
 
   await exporter.init(variablesToInitExporter, totalRows );
 
