@@ -2,8 +2,8 @@
 type promiseFn = () => Promise<void>;
 
 export type netcdfExporter = {
-  init: (variables : {[colName: string]: string}, rowCount: number) => Promise<void>,
-  write: (row : {[rowName: string]: any}) => Promise<void>,
+  init: (variables : Array<{ fieldName: string, fieldType: string }>, rowCount: number) => Promise<void>,
+  write: (row : Array<any>) => Promise<void>,
   finishWriting: promiseFn
 }
 

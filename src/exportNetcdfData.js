@@ -49,8 +49,11 @@ module.exports = async function exportNetcdfData(
   const variablesToInitExporter = variables.map(variable => {
     const netcdfVariable = file.root.variables[variable];
     const variableName = variablesUses[variable]? variablesUses[variable] : variable;
-    return { [variableName]: netcdfVariable.type };
-  }).reduce((v,c) =>({...c, ...v}));
+    return {
+      fieldName: variableName,
+      fieldType: netcdfVariable.type,
+    };
+  });
 
   await exporter.init(variablesToInitExporter, totalRows );
 
@@ -60,19 +63,18 @@ module.exports = async function exportNetcdfData(
   const netcdfVariables = {};
   variables.forEach(v => netcdfVariables[v] = file.root.variables[v]);
   while(!iterator.next().done) {
-    const row = {};
+    const row = [];
     variables.forEach( variable => {
       const netcdfVariable = netcdfVariables[variable] ;
       const dimensions = netcdfVariable.dimensions;
-      const fieldName = variablesUses[variable]? variablesUses[variable] : variable;
 
       if (netcdfVariable.type === 'char') {
         const pos = iteratorsByKeys[dimensions[0].name].current;
-        row[fieldName] = String.fromCharCode.apply(null,netcdfVariable.readSlice(pos, 1, 0, dimensions[1].length));
+        row.push(String.fromCharCode.apply(null,netcdfVariable.readSlice(pos, 1, 0, dimensions[1].length)));
         return;
       }
       const pos = dimensions.map(d => iteratorsByKeys[d.name].current);
-      row[fieldName] = netcdfVariable.read(...pos);
+      row.push(netcdfVariable.read(...pos));
     });
 
     await exporter.write(row);
