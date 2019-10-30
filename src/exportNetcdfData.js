@@ -45,7 +45,7 @@ module.exports = async function exportNetcdfData(
     return dimensions.map(d => ({ total: d.length, name: d.name, }));
   })), (d => d.name));
 
-  const totalRows = dimensionIteratorsControllers.reduce( (v, c) => ({ current: 0, name: '', total: v.total * c.total })).total;
+  const totalRows = dimensionIteratorsControllers.reduce((v, c) => (v * c.total ), 1);
   const variablesToInitExporter = variables.map(variable => {
     const netcdfVariable = file.root.variables[variable];
     const variableName = variablesUses[variable]? variablesUses[variable] : variable;
