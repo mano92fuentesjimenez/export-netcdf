@@ -17,9 +17,13 @@ describe('exporting netcdf files',() => {
     await exportNetcdf({ dirToFile: file,exporter, variables: ['Times'] });
 
     expect(exporter.init.calledOnce).to.equal(true);
-    expect(exporter.init.firstCall.args).to.deep.equal([{Times: 'char'}, 1]);
+    expect(exporter.init.firstCall.args).to.deep.equal([[
+      {
+        fieldName: 'Times',
+        fieldType: 'char'
+      }], 1]);
     expect(exporter.write.calledOnce).to.equal(true);
-    expect(exporter.write.firstCall.args).to.deep.equal([{Times: '2018-07-31_00:00:00'}]);
+    expect(exporter.write.firstCall.args).to.deep.equal([['2018-07-31_00:00:00']]);
     expect(exporter.finishWriting.calledOnce).to.equal(true);
   });
 
@@ -27,12 +31,14 @@ describe('exporting netcdf files',() => {
     await exportNetcdf({ dirToFile: file,exporter, variables: ['XLAT'] });
 
     expect(exporter.init.calledOnce).to.equal(true);
-    expect(exporter.init.firstCall.args).to.deep.equal([{XLAT: 'float'}, 139*77]);
+    expect(exporter.init.firstCall.args).to.deep.equal([[{
+      fieldName: 'XLAT',
+      fieldType: 'float',
+    }], 139*77]);
     expect(exporter.write.callCount).to.equal(139*77);
     exporter.write.args.forEach(([row]) => {
       const keys = Object.keys(row);
       expect(keys.length).to.equal(1);
-      expect(keys[0]).to.equal('XLAT');
     });
     expect(exporter.finishWriting.calledOnce).to.equal(true);
   });
@@ -41,12 +47,14 @@ describe('exporting netcdf files',() => {
     await exportNetcdf({ dirToFile: file,exporter, variables: ['XLAT'], variablesUses: {XLAT: 'LATITUDE'}});
 
     expect(exporter.init.calledOnce).to.equal(true);
-    expect(exporter.init.firstCall.args).to.deep.equal([{LATITUDE: 'float'}, 139*77]);
+    expect(exporter.init.firstCall.args).to.deep.equal([[{
+      fieldName: 'LATITUDE',
+      fieldType: 'float'
+    }], 139*77]);
     expect(exporter.write.callCount).to.equal(139*77);
     exporter.write.args.forEach(([row]) => {
       const keys = Object.keys(row);
       expect(keys.length).to.equal(1);
-      expect(keys[0]).to.equal('LATITUDE');
     });
     expect(exporter.finishWriting.calledOnce).to.equal(true);
   });
@@ -55,14 +63,20 @@ describe('exporting netcdf files',() => {
     await exportNetcdf({ dirToFile: file,exporter, variables: ['XLAT', 'Times'] });
 
     expect(exporter.init.calledOnce).to.equal(true);
-    expect(exporter.init.firstCall.args).to.deep.equal([{XLAT: 'float', Times: 'char'}, 139*77]);
+    expect(exporter.init.firstCall.args).to.deep.equal([
+      [{
+        fieldName: 'XLAT',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'Times',
+        fieldType: 'char'
+      }], 139*77]);
     expect(exporter.write.callCount).to.equal(139*77);
 
     exporter.write.args.forEach(([row]) => {
       const keys = Object.keys(row);
       expect(keys.length).to.equal(2);
-      expect(keys[0]).to.equal('XLAT');
-      expect(keys[1]).to.equal('Times');
     });
     expect(exporter.finishWriting.calledOnce).to.equal(true);
   });
@@ -71,14 +85,20 @@ describe('exporting netcdf files',() => {
     await exportNetcdf({ dirToFile: file,exporter, variables: ['XLAT', 'XLONG'],  variablesUses: {XLAT: 'LATITUDE', XLONG: 'LONGITUDE'} });
 
     expect(exporter.init.calledOnce).to.equal(true);
-    expect(exporter.init.firstCall.args).to.deep.equal([{LATITUDE: 'float', LONGITUDE: 'float'}, 139*77]);
+    expect(exporter.init.firstCall.args).to.deep.equal([
+      [{
+        fieldName: 'LATITUDE',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'LONGITUDE',
+        fieldType: 'float'
+      }], 139*77]);
     expect(exporter.write.callCount).to.equal(139*77);
 
     exporter.write.args.forEach(([row]) => {
       const keys = Object.keys(row);
       expect(keys.length).to.equal(2);
-      expect(keys[0]).to.equal('LATITUDE');
-      expect(keys[1]).to.equal('LONGITUDE');
     });
     expect(exporter.finishWriting.calledOnce).to.equal(true);
   });
@@ -87,34 +107,48 @@ describe('exporting netcdf files',() => {
     await exportNetcdf({ dirToFile: file,exporter, variables: ['XLAT', 'Times', 'XLONG', 'Q2', 'T2', 'TH2', 'PSFC', 'U10', 'V10'] });
 
     expect(exporter.init.calledOnce).to.equal(true);
-    expect(exporter.init.firstCall.args).to.deep.equal([
+    expect(exporter.init.firstCall.args).to.deep.equal([[
       {
-        XLAT: 'float',
-        Times: 'char',
-        XLONG: 'float',
-        Q2: 'float',
-        T2: 'float',
-        TH2: 'float',
-        PSFC: 'float',
-        U10: 'float',
-        V10: 'float',
+        fieldName: 'XLAT',
+        fieldType: 'float'
       },
-      139*77
-    ]);
+      {
+        fieldName: 'Times',
+        fieldType: 'char'
+      },{
+        fieldName: 'XLONG',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'Q2',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'T2',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'TH2',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'PSFC',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'U10',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'V10',
+        fieldType: 'float'
+      }], 139*77 ]);
+
     expect(exporter.write.callCount).to.equal(139*77);
 
     exporter.write.args.forEach(([row]) => {
       const keys = Object.keys(row);
       expect(keys.length).to.equal(9);
-      expect(keys[0]).to.equal('XLAT');
-      expect(keys[1]).to.equal('Times');
-      expect(keys[2]).to.equal('XLONG');
-      expect(keys[3]).to.equal('Q2');
-      expect(keys[4]).to.equal('T2');
-      expect(keys[5]).to.equal('TH2');
-      expect(keys[6]).to.equal('PSFC');
-      expect(keys[7]).to.equal('U10');
-      expect(keys[8]).to.equal('V10');
     });
     expect(exporter.finishWriting.calledOnce).to.equal(true);
   });
@@ -123,34 +157,48 @@ describe('exporting netcdf files',() => {
     await exportNetcdf({ dirToFile: file,exporter, variables: ['XLAT', 'Times', 'XLONG', 'Q2', 'T2', 'TH2', 'PSFC', 'U10', 'V10'], variablesUses: {XLAT: 'LATITUDE', XLONG: 'LONGITUDE'} });
 
     expect(exporter.init.calledOnce).to.equal(true);
-    expect(exporter.init.firstCall.args).to.deep.equal([
+    expect(exporter.init.firstCall.args).to.deep.equal([[
       {
-        LATITUDE: 'float',
-        Times: 'char',
-        LONGITUDE: 'float',
-        Q2: 'float',
-        T2: 'float',
-        TH2: 'float',
-        PSFC: 'float',
-        U10: 'float',
-        V10: 'float',
+        fieldName: 'LATITUDE',
+        fieldType: 'float'
       },
-      139*77
-    ]);
+      {
+        fieldName: 'Times',
+        fieldType: 'char'
+      },{
+        fieldName: 'LONGITUDE',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'Q2',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'T2',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'TH2',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'PSFC',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'U10',
+        fieldType: 'float'
+      },
+      {
+        fieldName: 'V10',
+        fieldType: 'float'
+      }], 139*77 ]);
+
     expect(exporter.write.callCount).to.equal(139*77);
 
     exporter.write.args.forEach(([row]) => {
       const keys = Object.keys(row);
       expect(keys.length).to.equal(9);
-      expect(keys[0]).to.equal('LATITUDE');
-      expect(keys[1]).to.equal('Times');
-      expect(keys[2]).to.equal('LONGITUDE');
-      expect(keys[3]).to.equal('Q2');
-      expect(keys[4]).to.equal('T2');
-      expect(keys[5]).to.equal('TH2');
-      expect(keys[6]).to.equal('PSFC');
-      expect(keys[7]).to.equal('U10');
-      expect(keys[8]).to.equal('V10');
     });
     expect(exporter.finishWriting.calledOnce).to.equal(true);
   });
