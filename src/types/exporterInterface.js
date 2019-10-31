@@ -7,6 +7,4 @@ export type netcdfExporter = {
   finishWriting: promiseFn
 }
 
-export type variablesUses = 'LATITUDE' | 'LONGITUDE' | 'TIME';
-
 export type dimensionIteratorController = { total: number, current: number, name: string };

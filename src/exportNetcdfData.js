@@ -1,5 +1,5 @@
 // @flow
-import type {dimensionIteratorController, netcdfExporter, variablesUses} from "./types/exporterInterface";
+import type {dimensionIteratorController, netcdfExporter} from "./types/exporterInterface";
 
 // $FlowFixMe
 const netcdf4 = require("netcdf4");
@@ -22,12 +22,10 @@ module.exports = async function exportNetcdfData(
     dirToFile,
     variables,
     exporter,
-    variablesUses = {},
   }: {
     dirToFile: string,
     variables: Array<string>,
     exporter: netcdfExporter,
-    variablesUses: { [variableName: string]: variablesUses }
   }
 ){
   if(!exporter)
@@ -48,9 +46,8 @@ module.exports = async function exportNetcdfData(
   const totalRows = dimensionIteratorsControllers.reduce((v, c) => (v * c.total ), 1);
   const variablesToInitExporter = variables.map(variable => {
     const netcdfVariable = file.root.variables[variable];
-    const variableName = variablesUses[variable]? variablesUses[variable] : variable;
     return {
-      fieldName: variableName,
+      fieldName: variable,
       fieldType: netcdfVariable.type,
     };
   });
