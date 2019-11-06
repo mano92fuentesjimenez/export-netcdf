@@ -12,14 +12,23 @@
   "scripts": {
     "build": "flow-remove-types src/ -d lib/",
     "prepublish": "yarn run build",
-    "test": "yarn build && mocha --recursive --timeout 5000 ./tests"
+    "test": "yarn build && mocha --recursive --timeout 5000 ./tests",
+    "lint": "eslint src/**/*.js",
+    "lint:fix": "eslint src/**/*.js --fix"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
+    "eslint": "^6.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-flowtype": "^4.3.0",
+    "eslint-plugin-import": "^2.18.2",
     "flow-bin": "^0.109.0",
     "flow-remove-types": "^2.109.0",
     "mocha": "^6.2.1",
     "sinon": "^7.5.0"
   },
-  "files": ["lib"]
+  "files": [
+    "lib"
+  ]
 }
