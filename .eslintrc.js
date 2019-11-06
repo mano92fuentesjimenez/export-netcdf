@@ -19,5 +19,7 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
+    "no-return-assign": 0,
+    "no-plusplus": 0,
   },
 };
